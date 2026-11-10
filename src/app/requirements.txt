@@ -1,0 +1,4 @@
+databricks-sql-connector>=3.4.0
+databricks-sdk>=0.40.0
+python-multipart>=0.0.9
+pillow>=10.0.0

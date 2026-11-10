@@ -1,0 +1,15 @@
+# Unity Catalog objects (README §1.3). The 4 bbox_demo_* tables are created by the pipeline job.
+# The app's service principal gets the minimum privileges listed in README §1.1
+# (USE SCHEMA + SELECT + MODIFY on the schema, inherited by the tables).
+resources:
+  schemas:
+    bbox_schema:
+      catalog_name: ${var.catalog}
+      name: ${var.schema}
+      comment: AI Parse Document bbox citation demo (tables + volumes)
+      grants:
+        - principal: ${resources.apps.bbox_citation_demo.service_principal_client_id}
+          privileges:
+            - USE_SCHEMA
+            - SELECT
+            - MODIFY

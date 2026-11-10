@@ -1,0 +1,15 @@
+# Managed volume (README §1.3). The app's service principal gets READ + WRITE
+# (write is needed for the Option 3/4 upload + processing flow).
+resources:
+  volumes:
+    bbox_demo_page_images:
+      catalog_name: ${var.catalog}
+      schema_name: ${resources.schemas.bbox_schema.name}
+      name: bbox_demo_page_images
+      volume_type: MANAGED
+      comment: Page images rendered by ai_parse_document (imageOutputPath); bbox pixel space
+      grants:
+        - principal: ${resources.apps.bbox_citation_demo.service_principal_client_id}
+          privileges:
+            - READ_VOLUME
+            - WRITE_VOLUME

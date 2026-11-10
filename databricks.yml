@@ -1,0 +1,44 @@
+# Declarative Automation Bundle for the AI Parse Document bbox citation demo.
+# Deploys: UC schema + 2 volumes (with grants), SQL warehouse, pipeline job, and the Databricks App.
+# Tables are created by the pipeline job, so they are not bundle resources (see README §3).
+bundle:
+  name: bbox_demo
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    description: Existing UC catalog that will hold the demo schema (the bundle does not create the catalog)
+    default: pdf_app_demo
+  schema:
+    description: Schema created by the bundle for tables and volumes
+    default: doc_intell_schema
+  app_name:
+    description: Databricks App name (lowercase letters, numbers, dashes; max 30 chars)
+    default: bbox-citation-demo
+  warehouse_name:
+    description: Name of the SQL warehouse created by the bundle
+    default: bbox_demo_wh
+
+targets:
+  # Isolated copy in the source workspace. Development mode prefixes the schema
+  # (dev_<user>_doc_intell_schema), job, and warehouse names, so it does not collide
+  # with the hand-built assets that already exist there.
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://adb-5343834423590926.6.azuredatabricks.net
+    variables:
+      app_name: bbox-citation-demo-dev
+
+  # Destination workspace. Set the host (or profile) before deploying.
+  prod:
+    mode: production
+    workspace:
+      host: https://<target-workspace-host>
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+    permissions:
+      - user_name: ${workspace.current_user.userName}
+        level: CAN_MANAGE

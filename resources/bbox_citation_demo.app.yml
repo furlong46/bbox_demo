@@ -1,0 +1,33 @@
+# Databricks App (README §1.1). Start command and env live here (not in src/app/app.yaml)
+# so catalog/schema follow the bundle variables and the dev-mode schema prefix.
+resources:
+  apps:
+    bbox_citation_demo:
+      name: ${var.app_name}
+      description: ai_parse_document + ai_extract bbox citations rendered on page images and PDF.js
+      source_code_path: ../src/app
+      compute_size: MEDIUM
+      config:
+        command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+        env:
+          - name: DATABRICKS_WAREHOUSE_ID
+            value_from: sql-warehouse
+          - name: BBOX_CATALOG
+            value: ${var.catalog}
+          - name: BBOX_SCHEMA
+            value: ${resources.schemas.bbox_schema.name}
+      resources:
+        - name: sql-warehouse
+          sql_warehouse:
+            id: ${resources.sql_warehouses.bbox_demo_wh.id}
+            permission: CAN_USE
+        - name: pdf-volume
+          uc_securable:
+            securable_type: VOLUME
+            securable_full_name: ${var.catalog}.${resources.schemas.bbox_schema.name}.pdfs
+            permission: READ_VOLUME
+        - name: image-volume
+          uc_securable:
+            securable_type: VOLUME
+            securable_full_name: ${var.catalog}.${resources.schemas.bbox_schema.name}.bbox_demo_page_images
+            permission: READ_VOLUME

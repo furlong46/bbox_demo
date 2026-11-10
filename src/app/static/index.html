@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Parse Document – Bounding Box Citations</title>
+  <link rel="stylesheet" href="/static/style.css?v=4" />
+</head>
+<body>
+  <header>
+    <div class="title">
+      <h1>AI Parse Document – Bounding Box Citations</h1>
+      <span class="sub">ai_parse_document + ai_extract (citations) rendered two ways</span>
+    </div>
+    <label>Document
+      <select id="docSelect"></select>
+    </label>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="img">Option 1 – Page images</button>
+    <button class="tab" data-tab="pdf">Option 2 – PDF (normalized)</button>
+    <button class="tab" data-tab="upload">Option 3 – Upload &amp; process in app</button>
+    <button class="tab" data-tab="upload_pdf">Option 4 – Upload &amp; process (PDF normalized)</button>
+    <span class="spacer"></span>
+    <label id="zoomCtl" class="hidden">Zoom
+      <select id="zoom">
+        <option value="0.5">50%</option>
+        <option value="0.75">75%</option>
+        <option value="1" selected>100%</option>
+        <option value="1.5">150%</option>
+        <option value="2">200%</option>
+      </select>
+    </label>
+  </nav>
+
+  <main>
+    <section id="docPane">
+      <details id="explain" class="explain" open>
+        <summary id="explainTitle"></summary>
+        <div id="explainBody"></div>
+        <div id="liveStats" class="live"></div>
+      </details>
+      <div id="pages"></div>
+    </section>
+    <aside id="fieldPane">
+      <h2>Extracted fields</h2>
+      <div id="fields"></div>
+    </aside>
+  </main>
+
+  <div id="status" class="status"></div>
+  <script type="module" src="/static/app.js?v=4"></script>
+</body>
+</html>
